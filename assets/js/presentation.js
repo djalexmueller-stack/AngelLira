@@ -809,7 +809,7 @@ function runS0(){
     // A troca visual só acontece após o frame real estar reproduzindo.
     v3.classList.add('active','video-ready');
     if(line){
-      line.innerHTML='Eu sou a sua<br><span class="goldword">assessora operacional</span><br>de inteligência artificial.';
+      line.innerHTML='Sou a sua<br><span class="goldword">assessora operacional</span><br>de inteligência artificial.';
       line.classList.add('m3-cover-line');
       line.classList.add('show');
     }
