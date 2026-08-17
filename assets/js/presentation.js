@@ -859,25 +859,23 @@ function runS0(){
     finalStarted=true;
     v3.classList.add('is-finished');
     setTimeout(()=>{try{v3.pause();}catch(e){}},coverTiming.crossfadeMs);
+    if(presentationMode === 'auto'){
+      // Sequência contínua: assim que a fala do vídeo 3 termina, entra
+      // direto no próximo momento, sem nenhuma espera artificial (só o
+      // crossfade normal de troca de slide).
+      if(acro)acro.classList.remove('show','expanded');
+      if(line){line.classList.remove('show','m3-cover-line');line.innerHTML='';}
+      showSlide(1);
+      return;
+    }
     setTimeout(()=>{
       if(!stillHere())return;
       if(acro)acro.classList.remove('show','expanded');
       if(line){line.classList.remove('show','m3-cover-line');line.innerHTML='';}
-      // A tag "iris ·" e o botão "continuar?" só servem de aviso/atalho
-      // manual (autoplay bloqueado ou modo manual). Em modo auto a
-      // troca de slide é imediata, então mostrá-los só criava um flash
-      // de meio segundo (a tag tem fade de 1s, cortado no meio).
-      if(presentationMode !== 'auto'){
-        if(tag)tag.classList.add('show');
-        if(skip)skip.classList.add('show');
-      }
-      // A abertura é uma sequência contínua: após a mensagem final, entra no
-      // primeiro momento sem exigir outro clique. Antes esperava 2200ms
-      // parada depois que ela terminava de falar — reduzido para não
-      // deixar tempo morto na tela.
-      setTimeout(()=>{
-        if(stillHere() && presentationMode === 'auto') showSlide(1);
-      },400);
+      // A tag "iris ·" e o botão "continuar?" só aparecem fora do modo
+      // auto — são o atalho manual (autoplay bloqueado ou modo manual).
+      if(tag)tag.classList.add('show');
+      if(skip)skip.classList.add('show');
     },coverTiming.finalMessageDelay);
   }
   async function startFirst(){
