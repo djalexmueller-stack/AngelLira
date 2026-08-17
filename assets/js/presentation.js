@@ -94,6 +94,7 @@ function showSlide(idx){
   slides[current].classList.add('active');
   dots.forEach((d,i)=>d.classList.toggle('active', i===current));
   counter.textContent = String(current+1).padStart(2,'0') + ' / ' + total;
+  if (typeof syncSidebarActive === 'function') syncSidebarActive();
 
   // ao entrar no Momento 1, inicia o vídeo imediatamente
   if (slides[current].id === 's1') controlMoment1Video(true);
@@ -102,6 +103,79 @@ function showSlide(idx){
   controlMoment4OrbitVideos(slides[current], true);
   runSlideSequence(slides[current]);
 }
+
+/* ============ barra lateral de navegação por momentos ============ */
+let syncSidebarActive = null;
+(function(){
+  const sidebar = document.getElementById('momentSidebar');
+  const toggle = document.getElementById('sidebarToggle');
+  const rail = document.getElementById('sidebarRail');
+  const scrim = document.getElementById('sidebarScrim');
+  const panelList = document.getElementById('sidebarPanelList');
+  if (!sidebar || !toggle || !rail || !scrim || !panelList) return;
+
+  function labelFor(slide, index){
+    const eyebrow = slide.querySelector(':scope > .eyebrow');
+    if (eyebrow && eyebrow.textContent.trim()) return eyebrow.textContent.trim();
+    if (slide.id === 's0') return 'Abertura · Prazer, eu sou a IRIS';
+    if (slide.classList.contains('close-slide')) return 'Encerramento';
+    return 'Momento ' + String(index + 1).padStart(2, '0');
+  }
+
+  const railDots = [];
+  const panelItems = [];
+  slides.forEach((slide, i) => {
+    const label = labelFor(slide, i);
+
+    const railDot = document.createElement('div');
+    railDot.className = 'sidebar-rail-dot';
+    railDot.setAttribute('role', 'button');
+    railDot.setAttribute('tabindex', '0');
+    railDot.setAttribute('aria-label', label);
+    const tip = document.createElement('span');
+    tip.className = 'rail-tip';
+    tip.textContent = label;
+    railDot.appendChild(tip);
+    railDot.addEventListener('click', () => { showSlide(i); closePanel(); });
+    railDot.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); showSlide(i); closePanel(); } });
+    rail.appendChild(railDot);
+    railDots.push(railDot);
+
+    const item = document.createElement('div');
+    item.className = 'sidebar-item';
+    item.setAttribute('role', 'button');
+    item.setAttribute('tabindex', '0');
+    const num = document.createElement('span');
+    num.className = 'sidebar-item-num';
+    num.textContent = String(i + 1).padStart(2, '0');
+    const lbl = document.createElement('span');
+    lbl.className = 'sidebar-item-label';
+    lbl.textContent = label;
+    item.appendChild(num);
+    item.appendChild(lbl);
+    item.addEventListener('click', () => { showSlide(i); closePanel(); });
+    item.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); showSlide(i); closePanel(); } });
+    panelList.appendChild(item);
+    panelItems.push(item);
+  });
+
+  function syncActive(){
+    railDots.forEach((d, i) => d.classList.toggle('active', i === current));
+    panelItems.forEach((it, i) => it.classList.toggle('active', i === current));
+    const activeItem = panelItems[current];
+    if (activeItem && sidebar.classList.contains('expanded')) activeItem.scrollIntoView({ block: 'nearest' });
+  }
+  syncSidebarActive = syncActive;
+  syncActive();
+
+  function openPanel(){ sidebar.classList.add('expanded'); toggle.setAttribute('aria-expanded', 'true'); }
+  function closePanel(){ sidebar.classList.remove('expanded'); toggle.setAttribute('aria-expanded', 'false'); }
+  function togglePanel(){ sidebar.classList.contains('expanded') ? closePanel() : openPanel(); }
+
+  toggle.addEventListener('click', e => { e.stopPropagation(); togglePanel(); });
+  scrim.addEventListener('click', closePanel);
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closePanel(); });
+})();
 
 /* Vídeos que substituem os avatares estáticos sem alterar seu footprint. */
 function controlPersonaVideos(slide, active){
@@ -1121,6 +1195,7 @@ function runSlideSequence(slide){
     slides[current].classList.add('active');
     dots.forEach((d,i)=>d.classList.toggle('active', i===current));
     counter.textContent = String(current+1).padStart(2,'0') + ' / ' + total;
+    if (typeof syncSidebarActive === 'function') syncSidebarActive();
   }
 })();
 initConversationScroll();
