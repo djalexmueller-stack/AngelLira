@@ -2148,16 +2148,16 @@ html,body{margin:0;padding:0;height:100%;background:#000;font-family:var(--sans)
 
 /* ===== CONTINUIDADE DE CENÁRIO — TODOS OS VÍDEOS EDITORIAIS ===== */
 #s0.open-slide{
-  background:#050509 url('assets/backgrounds/video_office_continuacao_final.png') 0 0/100% 100% no-repeat!important;
+  background:#050509 url('../backgrounds/video_office_continuacao_final.png') 0 0/100% 100% no-repeat!important;
 }
 #s0.open-slide:has(#irisIntroVideo2.active){
-  background-image:url('assets/backgrounds/video_studio_continuacao.png')!important;
+  background-image:url('../backgrounds/video_studio_continuacao.png')!important;
 }
 #s0.open-slide:has(#irisIntroVideo3.active){
   background:#000!important;
 }
 #s1,#s3,#s10,#s11,#s12{
-  background:#050509 url('assets/backgrounds/video_studio_continuacao.png') center/cover no-repeat!important;
+  background:#050509 url('../backgrounds/video_studio_continuacao.png') center/cover no-repeat!important;
 }
 #s0.open-slide::before,
 #s1::before,
@@ -2629,7 +2629,7 @@ html,body{margin:0;padding:0;height:100%;background:#000;font-family:var(--sans)
   background:transparent!important;
 }
 #s3{
-  background:#050509 url('assets/backgrounds/video_office_continuacao_final.png') center/cover no-repeat!important;
+  background:#050509 url('../backgrounds/video_office_continuacao_final.png') center/cover no-repeat!important;
 }
 #s3 .iris-video-stage .iris-persona-video{
   object-fit:contain!important;
