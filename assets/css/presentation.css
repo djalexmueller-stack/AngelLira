@@ -1455,7 +1455,7 @@ html,body{margin:0;padding:0;height:100%;background:#000;font-family:var(--sans)
 #s10 .m10-after-content{ display:flex; align-items:center; gap:12px; margin-top:8px; }
 #s10 .m10-after-content .m10-quote{
   flex:1; margin-top:0; max-width:640px; position:relative; z-index:6;
-  font-size:32px; line-height:1.22; color:var(--ink);
+  font-size:28px; line-height:1.22; color:var(--ink);
 }
 #s10 .m10-video-frame{
   position:absolute; right:0; top:0; bottom:0; width:42%; overflow:visible;
@@ -2196,7 +2196,7 @@ html,body{margin:0;padding:0;height:100%;background:#000;font-family:var(--sans)
   bottom:-2px;
   top:auto;
   width:680px;
-  height:383px;
+  height:260px;
   overflow:hidden;
   background:transparent;
   border:0;
@@ -2212,7 +2212,7 @@ html,body{margin:0;padding:0;height:100%;background:#000;font-family:var(--sans)
   height:100%;
   max-width:none;
   object-fit:cover;
-  object-position:center center;
+  object-position:center 22%;
   transform:translateZ(0)!important;
   transform-origin:center right;
   filter:saturate(.98) contrast(1.015) brightness(.985);
