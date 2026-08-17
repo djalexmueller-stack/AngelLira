@@ -575,12 +575,15 @@ function startIrisPresentation(ev){
           line.classList.remove('show');
           line.innerHTML='';
           clearTimeout(window.__irisHelloTimer);
+          // capa_video1_editado.mp4 agora corta para o vídeo 2 em ~2.4s (fala
+          // começa por volta de 0.3s), então a legenda precisa aparecer bem
+          // antes dos antigos 4000ms, ou surge por cima do vídeo errado.
           window.__irisHelloTimer=setTimeout(()=>{
             if(document.getElementById('s0')?.classList.contains('active')){
               line.innerHTML='Olá, eu sou a <span class="goldword">IRIS</span>.';
               line.classList.add('show');
             }
-          },4000);
+          },900);
         }
       }).catch(e=>{
         if(btn){btn.textContent='? Tentar novamente';btn.classList.add('show');}
@@ -692,12 +695,16 @@ function runS0(){
   if(!slide||!v1||!v2||!v3)return;
   const stillHere=()=>current===0 && gen===irisOpeningGeneration;
   let secondStarted=false, thirdStarted=false, finalStarted=false, brandShown=false, textTimer=null, monitorFrame=null;
+  // Vídeos 1/2/3 agora usam as versões *_editado.mp4 (passos e "IRIS,"/"Eu"
+  // iniciais removidos por corte real de arquivo). Os tempos abaixo foram
+  // recalculados por análise de áudio (RMS) sobre os arquivos já cortados —
+  // não são mais os mesmos números do vídeo original.
   const coverTiming={
-    v1:{start:0.38,speechStart:0.46,speechEnd:4.94,cut:5.02},
-    // O vídeo 2 permanece limpo até ~5.00 s; o corte ocorre em 5.04 s
+    v1:{start:0.02,speechStart:0.30,speechEnd:2.34,cut:2.42},
+    // O vídeo 2 permanece limpo até ~3.05 s; o corte ocorre em 3.09 s
     // (aprox. um frame após o fim da fala e antes de qualquer sobra visual).
-    v2:{start:1.08,speechStart:1.14,speechEnd:5.00,cut:5.04},
-    v3:{start:0},
+    v2:{start:0.02,speechStart:0.08,speechEnd:3.05,cut:3.09},
+    v3:{start:0.02},
     crossfadeMs:140,
     brandDelay:380,
     finalMessageDelay:180
@@ -732,11 +739,13 @@ function runS0(){
   }
   function scheduleHello(){
     clearTimeout(textTimer);
+    // Mesmo ajuste do outro fluxo (clique manual): vídeo 1 encurtado exige
+    // a legenda antes dos antigos 4000ms.
     textTimer=setTimeout(()=>{
       if(!stillHere()||!line)return;
       line.innerHTML='Olá, eu sou a <span class="goldword">IRIS</span>.';
       line.classList.add('show');
-    },4000);
+    },900);
   }
   function showBrand(){
     if(brandShown||thirdStarted||!stillHere())return;
