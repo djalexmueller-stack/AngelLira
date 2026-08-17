@@ -2760,7 +2760,10 @@ html,body{margin:0;padding:0;height:100%;background:#000;font-family:var(--sans)
 #s12 .close-figwrap .closing-video{width:460px!important;height:760px!important;}
 /* Encerramento com o mesmo enquadramento do terceiro vídeo da capa. */
 #s12 .close-figwrap{right:0!important;bottom:-10px!important;width:506px!important;height:744px!important;overflow:hidden!important;}
-#s12 .close-figwrap .closing-video{width:100%!important;height:100%!important;object-fit:cover!important;object-position:right 46%!important;}
+/* encerramento.mp4 traz a personagem centralizada no quadro (fundo liso),
+   diferente do capa_video3.mp4 (personagem deslocada à direita) — por isso
+   o recorte precisa ficar centrado, não "right", ou a personagem some. */
+#s12 .close-figwrap .closing-video{width:100%!important;height:100%!important;object-fit:cover!important;object-position:center!important;}
 #s12 .close-figwrap{bottom:-60px!important;}
 /* override efetivo: sem folga inferior */
 #s12 .close-figwrap{bottom:-120px!important;}
