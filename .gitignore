@@ -1,0 +1,60 @@
+# Dependencias e caches
+node_modules/
+.npm/
+.cache/
+package.json
+package-lock.json
+
+# Arquivos locais/sensiveis
+.env
+.env.*
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Sistema/editores
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+*.swo
+
+# Artefatos de trabalho que nao fazem parte da publicacao
+backups/
+comparacoes_AB/
+masters/
+originais/
+relatorios/
+scripts/
+tmp/
+web/
+Video 3/
+*.bak.html
+*.zip
+audit_*.mjs
+capture_*.mjs
+tmp_*.mjs
+validate_browser.mjs
+s3-test.png
+RELATORIO_AV.md
+ESTRUTURA_PROJETO.md
+process_av.sh
+
+# Assets publicados: manter somente os usados por index.html/CSS
+assets/backgrounds/*
+!assets/backgrounds/video_office_continuacao_final.png
+!assets/backgrounds/video_studio_continuacao.png
+assets/videos/*
+!assets/videos/mastered/
+assets/videos/mastered/*
+!assets/videos/mastered/capa_video1.mp4
+!assets/videos/mastered/capa_video2.mp4
+!assets/videos/mastered/capa_video3.mp4
+!assets/videos/mastered/momento01.mp4
+!assets/videos/mastered/momento03.mp4
+!assets/videos/mastered/momento04_video1.mp4
+!assets/videos/mastered/momento04_video2.mp4
+!assets/videos/mastered/momento07.mp4
+!assets/videos/mastered/momento10.mp4
+!assets/videos/mastered/momento11.mp4
