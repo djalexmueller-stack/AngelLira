@@ -1645,11 +1645,6 @@ html,body{margin:0;padding:0;height:100%;background:#000;font-family:var(--sans)
   100%{left:122%;opacity:0}
 }
 .slide > *{position:relative;z-index:2;}
-/* s1/s3/s4 vivem aninhados dentro de s0 como cenas fundidas (continuar()
-   da abertura), mas continuam sendo ".slide" de tela cheia — sem isso a
-   regra acima ("filho direto de .slide vira relative") os encolhia como
-   se fossem apenas conteúdo comum de slide. */
-#s1,#s3,#s4{position:absolute!important;inset:0!important;}
 .slide .footer{position:absolute;z-index:7;}
 .slide .open-figure,.slide .close-figwrap,.slide .m4-text,.slide .m8-bridge{position:absolute;}
 

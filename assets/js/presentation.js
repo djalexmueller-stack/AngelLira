@@ -45,10 +45,7 @@
 /* ============ slide navigation ============ */
 // Momento 02 removido da apresentação conforme solicitação.
 document.getElementById('s2')?.remove();
-// Momentos 1/2/3 (s1/s3/s4) foram fundidos dentro da abertura (s0) como
-// cenas internas — por isso o seletor pega só os slides de nível
-// superior (filhos diretos de #stage), não os aninhados dentro de s0.
-const slides = Array.from(document.querySelectorAll('#stage > .slide'));
+const slides = Array.from(document.querySelectorAll('.slide'));
 const total = slides.length;
 let current = 0;
 let presentationMode = 'auto';
@@ -96,7 +93,7 @@ function showSlide(idx){
   current = idx;
   slides[current].classList.add('active');
   dots.forEach((d,i)=>d.classList.toggle('active', i===current));
-  counter.textContent = String(current+1).padStart(2,'0') + ' / ' + String(total).padStart(2,'0');
+  counter.textContent = String(current+1).padStart(2,'0') + ' / ' + total;
   if (typeof syncSidebarActive === 'function') syncSidebarActive();
 
   // ao entrar no Momento 1, inicia o vídeo imediatamente
@@ -183,10 +180,7 @@ let syncSidebarActive = null;
 /* Vídeos que substituem os avatares estáticos sem alterar seu footprint. */
 function controlPersonaVideos(slide, active){
   if(!slide) return;
-  // s1/s3/s4 agora vivem aninhados dentro de s0 como cenas internas; ao
-  // processar s0 isso pegaria também o vídeo do s3 por engano. Só considera
-  // vídeos cujo ".slide" mais próximo é este mesmo slide.
-  const videos=Array.from(slide.querySelectorAll('[data-iris-persona-video]')).filter(v=>v.closest('.slide')===slide);
+  const videos=Array.from(slide.querySelectorAll('[data-iris-persona-video]'));
   videos.forEach(video=>{
     video._personaPlayToken=(video._personaPlayToken||0)+1;
     const token=video._personaPlayToken;
@@ -840,70 +834,9 @@ function runS0(){
       // A abertura é uma sequência contínua: após a mensagem final, entra no
       // primeiro momento sem exigir outro clique.
       setTimeout(()=>{
-        if(stillHere() && presentationMode === 'auto') runMergedIntroScenes();
+        if(stillHere() && presentationMode === 'auto') showSlide(1);
       },2200);
     },coverTiming.finalMessageDelay);
-  }
-  // Momentos 1/2/3 (s1/s3/s4) foram fundidos dentro da abertura como cenas
-  // internas: cada um toca seu video original e, ao terminar, a cena
-  // seguinte entra automaticamente. Reaproveita as funcoes ja existentes de
-  // cada slide (runS3/runS4, controlPersonaVideos, controlMoment4OrbitVideos)
-  // so adicionando o encadeamento via evento "ended".
-  function runMergedIntroScenes(){
-    if(!stillHere())return;
-    const s1El=document.getElementById('s1');
-    const s3El=document.getElementById('s3');
-    const s4El=document.getElementById('s4');
-    if(!s1El||!s3El||!s4El){ showSlide(1); return; }
-
-    function onceEnded(video,cb){
-      let settled=false;
-      const done=()=>{ if(settled)return; settled=true; video.removeEventListener('ended',done); cb(); };
-      video.addEventListener('ended',done);
-      return done;
-    }
-
-    function scene1(){
-      if(!stillHere())return;
-      s1El.classList.add('active');
-      const v=document.getElementById('m1IntroVideo');
-      const advance=()=>{ s1El.classList.remove('active'); scene3(); };
-      if(!v){ advance(); return; }
-      v.muted=false; v.volume=1;
-      try{ if(v.readyState>=1) v.currentTime=0; }catch(e){}
-      const done=onceEnded(v,advance);
-      let p; try{ p=v.play(); }catch(e){ p=null; }
-      if(p&&typeof p.catch==='function') p.catch(done);
-    }
-
-    function scene3(){
-      if(!stillHere())return;
-      s3El.classList.add('active');
-      runS3();
-      controlPersonaVideos(s3El,true);
-      const v=s3El.querySelector('[data-iris-persona-video]');
-      const advance=()=>{ controlPersonaVideos(s3El,false); s3El.classList.remove('active'); scene4(); };
-      if(!v){ setTimeout(advance,6500); return; }
-      onceEnded(v,advance);
-    }
-
-    function scene4(){
-      if(!stillHere())return;
-      s4El.classList.add('active');
-      controlMoment4OrbitVideos(s4El,true);
-      runS4();
-      const orbitVideos=Array.from(s4El.querySelectorAll('.iris-orbit-video'));
-      const lastVideo=orbitVideos[orbitVideos.length-1];
-      const advance=()=>{
-        controlMoment4OrbitVideos(s4El,false);
-        s4El.classList.remove('active');
-        if(stillHere()&&presentationMode==='auto') showSlide(1);
-      };
-      if(!lastVideo){ setTimeout(advance,8000); return; }
-      onceEnded(lastVideo,advance);
-    }
-
-    scene1();
   }
   async function startFirst(){
     if(!stillHere())return false;
@@ -1273,7 +1206,7 @@ function runSlideSequence(slide){
     current = s-1;
     slides[current].classList.add('active');
     dots.forEach((d,i)=>d.classList.toggle('active', i===current));
-    counter.textContent = String(current+1).padStart(2,'0') + ' / ' + String(total).padStart(2,'0');
+    counter.textContent = String(current+1).padStart(2,'0') + ' / ' + total;
     if (typeof syncSidebarActive === 'function') syncSidebarActive();
   }
 })();
