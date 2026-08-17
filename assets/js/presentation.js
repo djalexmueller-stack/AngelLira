@@ -578,12 +578,13 @@ function startIrisPresentation(ev){
           // capa_video1_editado.mp4 agora corta para o vídeo 2 em ~2.4s (fala
           // começa por volta de 0.3s), então a legenda precisa aparecer bem
           // antes dos antigos 4000ms, ou surge por cima do vídeo errado.
+          // v1 agora fala a partir de ~2.24s (caminhada acelerada + chegada).
           window.__irisHelloTimer=setTimeout(()=>{
             if(document.getElementById('s0')?.classList.contains('active')){
               line.innerHTML='Olá, eu sou a <span class="goldword">IRIS</span>.';
               line.classList.add('show');
             }
-          },900);
+          },2600);
         }
       }).catch(e=>{
         if(btn){btn.textContent='? Tentar novamente';btn.classList.add('show');}
@@ -699,8 +700,10 @@ function runS0(){
   // iniciais removidos por corte real de arquivo). Os tempos abaixo foram
   // recalculados por análise de áudio (RMS) sobre os arquivos já cortados —
   // não são mais os mesmos números do vídeo original.
+  // v1: a caminhada continua visível, só foi acelerada (1.6x) e teve o
+  // áudio de passos silenciado; a fala em si não foi tocada.
   const coverTiming={
-    v1:{start:0.02,speechStart:0.30,speechEnd:2.34,cut:2.42},
+    v1:{start:0.02,speechStart:2.24,speechEnd:4.08,cut:4.23},
     // O vídeo 2 permanece limpo até ~3.05 s; o corte ocorre em 3.09 s
     // (aprox. um frame após o fim da fala e antes de qualquer sobra visual).
     v2:{start:0.02,speechStart:0.08,speechEnd:3.05,cut:3.09},
@@ -740,12 +743,12 @@ function runS0(){
   function scheduleHello(){
     clearTimeout(textTimer);
     // Mesmo ajuste do outro fluxo (clique manual): vídeo 1 encurtado exige
-    // a legenda antes dos antigos 4000ms.
+    // a legenda antes dos antigos 4000ms (fala começa em ~2.24s agora).
     textTimer=setTimeout(()=>{
       if(!stillHere()||!line)return;
       line.innerHTML='Olá, eu sou a <span class="goldword">IRIS</span>.';
       line.classList.add('show');
-    },900);
+    },2600);
   }
   function showBrand(){
     if(brandShown||thirdStarted||!stillHere())return;
