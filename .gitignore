@@ -45,6 +45,8 @@ process_av.sh
 assets/backgrounds/*
 !assets/backgrounds/video_office_continuacao_final.png
 !assets/backgrounds/video_studio_continuacao.png
+!assets/backgrounds/momento04_video1_fundo.png
+!assets/backgrounds/momento04_video2_fundo.png
 assets/videos/*
 !assets/videos/mastered/
 assets/videos/mastered/*
