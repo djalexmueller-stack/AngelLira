@@ -1451,9 +1451,12 @@ html,body{margin:0;padding:0;height:100%;background:#000;font-family:var(--sans)
 .m10-quote{ font-family:var(--serif); font-size:15px; color:var(--ink-dim); margin-top:22px; max-width:300px; line-height:1.55; }
 .m10-quote .g{ color:var(--gold); font-style:italic; }
 #s10{ isolation:isolate; }
-#s10 .compare-col.after{ position:relative; padding-right:330px; z-index:5; }
+#s10 .compare-col.after{ position:relative; padding-right:60px; z-index:5; }
 #s10 .m10-after-content{ display:flex; align-items:center; gap:12px; margin-top:8px; }
-#s10 .m10-after-content .m10-quote{ flex:1; margin-top:0; max-width:235px; position:relative; z-index:6; }
+#s10 .m10-after-content .m10-quote{
+  flex:1; margin-top:0; max-width:640px; position:relative; z-index:6;
+  font-size:32px; line-height:1.22; color:var(--ink);
+}
 #s10 .m10-video-frame{
   position:absolute; right:0; top:0; bottom:0; width:42%; overflow:visible;
   margin-left:0; pointer-events:none; z-index:3; isolation:isolate;
@@ -2189,11 +2192,11 @@ html,body{margin:0;padding:0;height:100%;background:#000;font-family:var(--sans)
 
 #s10 .m10-video-frame{
   position:fixed;
-  right:0;
-  bottom:-10px;
+  right:-28px;
+  bottom:-2px;
   top:auto;
-  width:506px;
-  height:744px;
+  width:680px;
+  height:383px;
   overflow:hidden;
   background:transparent;
   border:0;
@@ -2204,19 +2207,19 @@ html,body{margin:0;padding:0;height:100%;background:#000;font-family:var(--sans)
 #s10 .m10-video-frame::before{display:none!important;}
 #s10 .m10-video{
   position:absolute;
-  inset:0 0 0 auto;
-  width:418px;
-  height:744px;
+  inset:0;
+  width:100%;
+  height:100%;
   max-width:none;
   object-fit:cover;
-  object-position:center top;
+  object-position:center center;
   transform:translateZ(0)!important;
   transform-origin:center right;
   filter:saturate(.98) contrast(1.015) brightness(.985);
   -webkit-mask-image:linear-gradient(90deg,transparent 0%,rgba(0,0,0,.08) 20%,rgba(0,0,0,.38) 40%,rgba(0,0,0,.76) 58%,#000 72%,#000 100%)!important;
   mask-image:linear-gradient(90deg,transparent 0%,rgba(0,0,0,.08) 20%,rgba(0,0,0,.38) 40%,rgba(0,0,0,.76) 58%,#000 72%,#000 100%)!important;
 }
-#s10 .compare-col.after{padding-right:330px;}
+#s10 .compare-col.after{padding-right:60px;}
 
 /* ===== CONTINUIDADE DE CENÁRIO — TODOS OS VÍDEOS EDITORIAIS ===== */
 #s0.open-slide{
