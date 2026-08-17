@@ -866,10 +866,12 @@ function runS0(){
       if(tag)tag.classList.add('show');
       if(skip)skip.classList.add('show');
       // A abertura é uma sequência contínua: após a mensagem final, entra no
-      // primeiro momento sem exigir outro clique.
+      // primeiro momento sem exigir outro clique. Antes esperava 2200ms
+      // parada depois que ela terminava de falar — reduzido para não
+      // deixar tempo morto na tela.
       setTimeout(()=>{
         if(stillHere() && presentationMode === 'auto') showSlide(1);
-      },2200);
+      },400);
     },coverTiming.finalMessageDelay);
   }
   async function startFirst(){
