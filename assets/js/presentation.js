@@ -863,8 +863,14 @@ function runS0(){
       if(!stillHere())return;
       if(acro)acro.classList.remove('show','expanded');
       if(line){line.classList.remove('show','m3-cover-line');line.innerHTML='';}
-      if(tag)tag.classList.add('show');
-      if(skip)skip.classList.add('show');
+      // A tag "iris ·" e o botão "continuar?" só servem de aviso/atalho
+      // manual (autoplay bloqueado ou modo manual). Em modo auto a
+      // troca de slide é imediata, então mostrá-los só criava um flash
+      // de meio segundo (a tag tem fade de 1s, cortado no meio).
+      if(presentationMode !== 'auto'){
+        if(tag)tag.classList.add('show');
+        if(skip)skip.classList.add('show');
+      }
       // A abertura é uma sequência contínua: após a mensagem final, entra no
       // primeiro momento sem exigir outro clique. Antes esperava 2200ms
       // parada depois que ela terminava de falar — reduzido para não
