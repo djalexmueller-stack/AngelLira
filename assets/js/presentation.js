@@ -435,6 +435,40 @@ function setupIrisSpeakingSideVideos(){
 setupIrisSpeakingSideVideos();
 enhanceConversationAvatars();
 
+/* Avança sozinho, sem pausa, pela sequência inicial de apresentação da
+   IRIS (Apresentação -> Conhecimento operacional -> Orquestração ->
+   Demonstração), assim que o vídeo de cada slide termina. Cada slide
+   continua totalmente independente (próprio layout/CSS/navegação) — só
+   adiciona o encadeamento por cima, sem mexer em nada existente. */
+(function setupAutoAdvanceChain(){
+  function chain(slideId, getVideo){
+    const slide = document.getElementById(slideId);
+    if(!slide) return;
+    let wiredVideo = null;
+    const tryWire = () => {
+      const v = getVideo();
+      if(!v || v === wiredVideo) return;
+      wiredVideo = v;
+      v.addEventListener('ended', () => {
+        if(presentationMode === 'auto' && slides[current] === slide){
+          showSlide(current + 1);
+        }
+      });
+    };
+    tryWire();
+    // O vídeo do s3 só existe no lugar certo depois que
+    // setupIrisSpeakingSideVideos() termina de movê-lo; tenta de novo
+    // num próximo tick para garantir que já foi encontrado.
+    setTimeout(tryWire, 0);
+  }
+  chain('s1', () => document.getElementById('m1IntroVideo'));
+  chain('s3', () => document.getElementById('s3')?.querySelector('[data-iris-persona-video]'));
+  chain('s4', () => {
+    const vids = Array.from(document.getElementById('s4')?.querySelectorAll('.iris-orbit-video') || []);
+    return vids[vids.length - 1];
+  });
+})();
+
 initConversationScroll();
 // A sequência inicial é disparada uma única vez ao final do script, depois
 // que todas as funções e manipuladores já foram configurados.
