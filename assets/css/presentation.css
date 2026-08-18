@@ -2520,7 +2520,7 @@ html,body{margin:0;padding:0;height:100%;background:#000;font-family:var(--sans)
 }
 #s12 .close-figwrap.hide-for-logo{
   opacity:1!important;
-  transform:translateX(-50%)!important;
+  transform:none!important;
   pointer-events:none;
 }
 #s12 .close-textwrap{z-index:6;}
