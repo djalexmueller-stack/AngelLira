@@ -1221,6 +1221,7 @@ function runS12(){
   after(4650, ()=>{ line1.classList.remove('focus'); line1.classList.add('locked'); divider.classList.add('show'); });
   after(5350, ()=>{ line2.classList.remove('hidden'); line2.classList.add('focus'); });
   after(6850, ()=>{ line2.classList.remove('focus'); line2.classList.add('locked'); });
+  after(7300, ()=>{ if(fig) fig.classList.add('hide-for-logo'); });
   after(7900, ()=>{ sig.classList.add('show'); });
 }
 
@@ -1269,4 +1270,42 @@ runSlideSequence(slides[current]);
   const bridge=document.querySelector('.m8-bridge');
   if(bridge && !bridge.querySelector('.energy')){ const e=document.createElement('span'); e.className='energy'; bridge.appendChild(e); }
   /* pointer parallax intentionally disabled for executive version */
+})();
+
+/* ============ pausar/retomar clicando no centro da apresentação ============
+   As zonas .clickzone (esquerda/direita, 16% cada) navegam entre slides.
+   A área central, sem uso até então, agora pausa o(s) vídeo(s) do slide
+   ativo (e, com isso, também a sequência automática, que avança pelo
+   evento 'ended' dos próprios vídeos). Clicar de novo retoma exatamente
+   o que estava tocando. */
+(function(){
+  const stage=document.getElementById('stage');
+  if(!stage) return;
+  const excludeSelector='a, button, input, select, textarea, [role="button"], '+
+    '.clickzone, .navbtn, .mode-option, .sidebar-toggle, .sidebar-rail-dot, '+
+    '.sidebar-item, .dot, .iris-opening-start, .iris-opening-error';
+  let pausedState=null; // { slide, videos }
+
+  stage.addEventListener('click', (event)=>{
+    if(event.target.closest(excludeSelector)) return;
+    const activeSlide=stage.querySelector('.slide.active');
+    if(!activeSlide) return;
+
+    if(pausedState && pausedState.slide===activeSlide && pausedState.videos.every(v=>v.paused)){
+      pausedState.videos.forEach(video=>{
+        try{
+          const p=video.play();
+          if(p && typeof p.catch==='function') p.catch(()=>{});
+        }catch(_){ }
+      });
+      pausedState=null;
+      return;
+    }
+
+    pausedState=null;
+    const playing=Array.from(activeSlide.querySelectorAll('video')).filter(v=>!v.paused && !v.ended);
+    if(!playing.length) return;
+    playing.forEach(video=>{ try{ video.pause(); }catch(_){ } });
+    pausedState={ slide:activeSlide, videos:playing };
+  });
 })();
